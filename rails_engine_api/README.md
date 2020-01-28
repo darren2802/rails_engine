@@ -1,35 +1,38 @@
-# README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
 # Rails Engine Project
 
 _Uses Rails and ActiveRecord to build a JSON api which exposes the SalesEngine data schema._
 
-## Database Schema
-![](./rails_engine_db_schema.png)
+## Versions
+- Ruby: 2.5.3
+- Rails: 5.2.4.1
+
+## System dependencies
+_Gems?_
+
+## Configuration
+_?_
+
+## Database
+### Creation
+_rake db:{create, migrate, seed} ?_
+
+### Initialization
+_?_
+### Schema
+![](./db/rails_engine_db_schema.png)
+
+## How to run the test suite
+_rspec?_
+
+## Services (job queues, cache servers, search engines, etc.)
+_?_
+
+## Deployment instructions
+_?_
+
+## ...
+_?_
+
 ## Evaluation
 ### Feature Delivery
 Feature completeness will be determined using the spec harness
