@@ -21,4 +21,8 @@ class Api::V1::MerchantsController < ApplicationController
   def find
     require "pry"; binding.pry
   end
+
+  def favorite_customer
+    render json: CustomerSerializer.new(Invoice.favorite_customer(params[:id]))
+  end
 end

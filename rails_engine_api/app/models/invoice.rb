@@ -14,4 +14,13 @@ class Invoice < ApplicationRecord
     .merge(Transaction.successful)
     .where("invoices.created_at::date::text = ?", date)
   end
+
+  def self.favorite_customer(merchant_id)
+    Invoice.joins(:customer, :transactions)
+            .select('customers.*, COUNT(*)')
+            .where('invoices.merchant_id = ?', merchant_id)
+            .group('customers.id')
+            .merge(Transaction.successful)
+            .order('count DESC').limit(1)[0]
+  end
 end
