@@ -52,4 +52,21 @@ describe 'Items API' do
     merchant_json = JSON.parse(response.body)
     expect(merchant_json['data']['attributes']['name']).to eq(merchant.name)
   end
+
+  it 'can send the top x items ranked by total revenue generated' do
+    merchant = create(:merchant)
+    item_1 = create(:item, merchant_id: merchant.id, unit_price: 100)
+    item_2 = create(:item, merchant_id: merchant.id, unit_price: 200)
+    item_3 = create(:item, merchant_id: merchant.id, unit_price: 300)
+    customer = create(:customer)
+    invoice = create(:invoice, customer_id: customer.id, merchant_id: merchant.id)
+    invoice_item_1 = create(:invoice_item, item_id: item_1.id, invoice_id: invoice.id, unit_price: 100, quantity: 10)
+    invoice_item_2 = create(:invoice_item, item_id: item_2.id, invoice_id: invoice.id, unit_price: 200, quantity: 20)
+    invoice_item_3 = create(:invoice_item, item_id: item_3.id, invoice_id: invoice.id, unit_price: 300, quantity: 30)
+
+    get '/api/v1/items/most_revenue?quantity=1'
+    expect(response).to be_successful
+    item_json = JSON.parse(response.body)
+    expect(item_json['data'][0]['id']).to eq(item_3.id.to_s)
+  end
 end
