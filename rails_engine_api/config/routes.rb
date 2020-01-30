@@ -13,6 +13,8 @@ Rails.application.routes.draw do
       get '/items/:id/merchant', to: 'items/merchants#show'
 
       resources :customers, only: [:index, :show]
+      get '/customers/:id/invoices', to: 'customers/invoices#index'
+      get '/customers/:id/transactions', to: 'customers/transactions#index'
 
       resources :invoices, only: [:index, :show]
       get '/invoices/:id/transactions', to: 'invoices/transactions#index'
@@ -22,6 +24,8 @@ Rails.application.routes.draw do
       get '/invoices/:id/merchant', to: 'invoices/merchants#show'
 
       resources :transactions, only: [:index, :show]
+      get '/transactions/:id/invoice', to: 'transactions/invoices#show'
+
       resources :invoice_items, only: [:index, :show]
       get '/invoice_items/:id/invoice', to: 'invoice_items/invoices#show'
       get '/invoice_items/:id/item', to: 'invoice_items/items#show'
