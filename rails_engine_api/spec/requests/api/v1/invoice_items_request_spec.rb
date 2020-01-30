@@ -28,6 +28,6 @@ describe 'Invoice_items API' do
     expect(invoice_item['data']['attributes']['item_id']).to eq(item_id)
     expect(invoice_item['data']['attributes']['invoice_id']).to eq(invoice_id)
     expect(invoice_item['data']['attributes']['quantity']).to eq(inv_item.quantity)
-    expect(invoice_item['data']['attributes']['unit_price']).to eq(inv_item.unit_price)
+    expect(invoice_item['data']['attributes']['unit_price']).to eq((inv_item.unit_price.to_f / 100).to_s)
   end
 end
