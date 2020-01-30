@@ -20,6 +20,6 @@ describe 'Items API' do
     item_json = JSON.parse(response.body)
     expect(item_json['data']['attributes']['name']).to eq(item.name)
     expect(item_json['data']['attributes']['description']).to eq(item.description)
-    expect(item_json['data']['attributes']['unit_price']).to eq(item.unit_price)
+    expect(item_json['data']['attributes']['unit_price']).to eq((item.unit_price.to_f / 100).to_s)
   end
 end
