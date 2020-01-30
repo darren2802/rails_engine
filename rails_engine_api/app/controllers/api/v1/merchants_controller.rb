@@ -17,4 +17,8 @@ class Api::V1::MerchantsController < ApplicationController
     total_revenue_hash = {:data => {:attributes => {total_revenue: total_revenue.to_s}}}
     render json: total_revenue_hash
   end
+
+  def find
+    require "pry"; binding.pry
+  end
 end
