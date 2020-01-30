@@ -2,15 +2,18 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get '/merchants/most_revenue', to: 'merchants#most_revenue'
+      get '/merchants/revenue', to: 'merchants#revenue'
       resources :merchants, only: [:index, :show]
       get '/merchants/:id/items', to: 'merchants/items#index'
       get '/merchants/:id/invoices', to: 'merchants/invoices#index'
-      get '/merchants/revenue', to: 'merchants#revenue'
       get '/merchants/find', to: 'merchants#find'
+      get '/merchants/:id/favorite_customer', to: 'merchants#favorite_customer'
 
+      get '/items/most_revenue', to: 'items#most_revenue'
       resources :items, only: [:index, :show]
       get '/items/:id/invoice_items', to: 'items/invoice_items#index'
       get '/items/:id/merchant', to: 'items/merchants#show'
+      get '/items/:id/best_day', to: 'items#best_day'
 
       resources :customers, only: [:index, :show]
       get '/customers/:id/invoices', to: 'customers/invoices#index'
