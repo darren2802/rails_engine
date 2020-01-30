@@ -2,10 +2,10 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get '/merchants/most_revenue', to: 'merchants#most_revenue'
+      get '/merchants/revenue', to: 'merchants#revenue'
       resources :merchants, only: [:index, :show]
       get '/merchants/:id/items', to: 'merchants/items#index'
       get '/merchants/:id/invoices', to: 'merchants/invoices#index'
-      get '/merchants/revenue', to: 'merchants#revenue'
       get '/merchants/find', to: 'merchants#find'
       get '/merchants/:id/favorite_customer', to: 'merchants#favorite_customer'
 
