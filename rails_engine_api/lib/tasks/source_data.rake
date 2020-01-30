@@ -1,8 +1,8 @@
 require 'CSV'
 
 namespace :db do
-  desc "Clears data that was imported using import_csv"
-  task :clear_csv => :environment do
+  desc "Clears data from db tables"
+  task :clear_data => :environment do
     InvoiceItem.destroy_all
     Transaction.destroy_all
     Invoice.destroy_all
@@ -12,6 +12,7 @@ namespace :db do
   end
 
   desc "Reads csv files and uploads them to the relevant db tables"
+  # uses the activerecord-import gem
   task :import_csv => :environment do
     # import customer data
     columns = [:id, :first_name, :last_name, :created_at, :updated_at]
