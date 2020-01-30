@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      get '/merchants/:id/items', to: 'merchant_items#index'
-      get '/merchants/:id/invoices', to: 'merchant_invoices#index'
       get '/merchants/most_revenue', to: 'merchants#most_revenue'
+      resources :merchants, only: [:index, :show]
+      get '/merchants/:id/items', to: 'merchants/items#index'
+      get '/merchants/:id/invoices', to: 'merchants/invoices#index'
       get '/merchants/revenue', to: 'merchants#revenue'
       get '/merchants/find', to: 'merchants#find'
-      resources :merchants, only: [:index, :show]
 
       resources :items, only: [:index, :show]
       resources :customers, only: [:index, :show]
@@ -20,6 +20,8 @@ Rails.application.routes.draw do
 
       resources :transactions, only: [:index, :show]
       resources :invoice_items, only: [:index, :show]
+      get '/invoice_items/:id/invoice', to: 'invoice_items/invoices#show'
+      get '/invoice_items/:id/item', to: 'invoice_items/items#show'
     end
   end
 end
