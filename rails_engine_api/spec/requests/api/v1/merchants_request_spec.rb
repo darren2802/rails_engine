@@ -48,7 +48,7 @@ describe 'Merchants API' do
     expect(merchant_invoices['data'].count).to eq(5)
   end
 
-  it 'returns the top x merchants ranked by total revenue' do
+  it 'can send the top x merchants ranked by total revenue' do
     customer_id_1 = create(:customer).id
     merchant_id_1 = create(:merchant).id
     invoice_id_1 = create(:invoice, customer_id: customer_id_1, merchant_id: merchant_id_1).id
@@ -77,7 +77,7 @@ describe 'Merchants API' do
     expect(merchants['data'].count).to eq(2)
   end
 
-  xit 'returns the total revenue for date x across all merchants' do
+  xit 'can send the total revenue for date x across all merchants' do
     customer_id_1 = create(:customer).id
     merchant_id_1 = create(:merchant).id
     invoice_id_1 = create(:invoice, customer_id: customer_id_1, merchant_id: merchant_id_1).id
@@ -98,6 +98,29 @@ describe 'Merchants API' do
     transaction_3 = create(:transaction, invoice_id: invoice_id_3, result: "success")
     item_id_3 = create(:item, merchant_id: merchant_id_3).id
     create_list(:invoice_item, 5, invoice_id: invoice_id_3, item_id: item_id_3)
+  end
 
+  it 'can send the customer who has conducted the most total number of successful transactions' do
+    merchant_id = create(:merchant).id
+
+    customer_id_1 = create(:customer).id
+    invoice_id_1 = create(:invoice, customer_id: customer_id_1, merchant_id: merchant_id).id
+    transaction_1 = create(:transaction, invoice_id: invoice_id_1, result: "success")
+
+    customer_id_2 = create(:customer).id
+    invoice_id_2 = create(:invoice, customer_id: customer_id_2, merchant_id: merchant_id).id
+    transaction_2 = create(:transaction, invoice_id: invoice_id_2, result: "success")
+
+    customer_3 = create(:customer)
+    invoice_id_3 = create(:invoice, customer_id: customer_3.id, merchant_id: merchant_id).id
+    invoice_id_4 = create(:invoice, customer_id: customer_3.id, merchant_id: merchant_id).id
+    transaction_3 = create(:transaction, invoice_id: invoice_id_3, result: "success")
+    transaction_4 = create(:transaction, invoice_id: invoice_id_4, result: "success")
+
+    get "/api/v1/merchants/#{merchant_id}/favorite_customer"
+    expect(response).to be_successful
+    customer_json = JSON.parse(response.body)
+    expect(customer_json['data']['attributes']['first_name']).to eq(customer_3.first_name)
+    expect(customer_json['data']['attributes']['last_name']).to eq(customer_3.last_name)
   end
 end
