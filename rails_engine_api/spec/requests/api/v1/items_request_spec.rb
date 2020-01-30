@@ -69,4 +69,24 @@ describe 'Items API' do
     item_json = JSON.parse(response.body)
     expect(item_json['data'][0]['id']).to eq(item_3.id.to_s)
   end
+
+  it 'can send the date with the most sales for the given item using the invoice date' do
+    merchant = create(:merchant)
+    item = create(:item, merchant_id: merchant.id, unit_price: 1000)
+    customer = create(:customer)
+
+    invoice_1 = create(:invoice, customer_id: customer.id, merchant_id: merchant.id, created_at: "2020-01-05")
+    invoice_item_1 = create(:invoice_item, item_id: item.id, invoice_id: invoice_1.id, quantity: 10, unit_price: 1000, created_at: "2020-01-05")
+
+    invoice_2 = create(:invoice, customer_id: customer.id, merchant_id: merchant.id, created_at: "2020-01-10")
+    invoice_item_2 = create(:invoice_item, item_id: item.id, invoice_id: invoice_2.id, quantity: 30, unit_price: 1000, created_at: "2020-01-10")
+
+    invoice_3 = create(:invoice, customer_id: customer.id, merchant_id: merchant.id, created_at: "2020-01-15")
+    invoice_item_3 = create(:invoice_item, item_id: item.id, invoice_id: invoice_3.id, quantity: 20, unit_price: 1000, created_at: "2020-01-15")
+
+    get "/api/v1/items/#{item.id}/best_day"
+    expect(response).to be_successful
+    best_day_json = JSON.parse(response.body)
+    expect(best_day_json['data']['attributes']['best_day']).to eq("2020-01-10")
+  end
 end
