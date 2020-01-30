@@ -30,4 +30,32 @@ describe 'Invoice_items API' do
     expect(invoice_item['data']['attributes']['quantity']).to eq(inv_item.quantity)
     expect(invoice_item['data']['attributes']['unit_price']).to eq((inv_item.unit_price.to_f / 100).to_s)
   end
+
+  it 'can send an associated invoice for an invoice_item' do
+    customer_id = create(:customer).id
+    merchant_id = create(:merchant).id
+    invoice = create(:invoice, customer_id: customer_id, merchant_id: merchant_id)
+    item_id = create(:item, merchant_id: merchant_id).id
+    inv_item = create(:invoice_item, invoice_id: invoice.id, item_id: item_id)
+
+    get "/api/v1/invoice_items/#{inv_item.id}/invoice"
+    expect(response).to be_successful
+    invoice_json = JSON.parse(response.body)
+    expect(invoice_json['data']['attributes']['status']).to eq(invoice.status)
+  end
+
+  it 'can send an associated item for an invoice_item' do
+    customer_id = create(:customer).id
+    merchant_id = create(:merchant).id
+    invoice_id = create(:invoice, customer_id: customer_id, merchant_id: merchant_id).id
+    item = create(:item, merchant_id: merchant_id)
+    inv_item = create(:invoice_item, invoice_id: invoice_id, item_id: item.id)
+
+    get "/api/v1/invoice_items/#{inv_item.id}/item"
+    expect(response).to be_successful
+    item_json = JSON.parse(response.body)
+    expect(item_json['data']['attributes']['name']).to eq(item.name)
+    expect(item_json['data']['attributes']['description']).to eq(item.description)
+    expect(item_json['data']['attributes']['unit_price']).to eq((item.unit_price.to_f / 100).to_s)
+  end
 end
