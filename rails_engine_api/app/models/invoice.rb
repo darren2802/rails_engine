@@ -12,7 +12,7 @@ class Invoice < ApplicationRecord
     select('sum(quantity * unit_price)::float/100 as total_revenue')
     .joins(:invoice_items, :transactions)
     .merge(Transaction.successful)
-    .where("invoices.created_at::date::text = ?", date)
+    .where("invoices.created_at::date::text = ?", date)[0]['total_revenue']
   end
 
   def self.favorite_customer(merchant_id)
