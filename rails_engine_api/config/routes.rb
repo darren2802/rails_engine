@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       get '/items/:id/merchant', to: 'items/merchants#show'
       get '/items/:id/best_day', to: 'items#best_day'
 
+      get '/customers/:id/favorite_merchant', to: 'merchants#favorite_merchant'
       resources :customers, only: [:index, :show]
       get '/customers/:id/invoices', to: 'customers/invoices#index'
       get '/customers/:id/transactions', to: 'customers/transactions#index'
