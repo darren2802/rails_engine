@@ -18,15 +18,15 @@ class Api::V1::MerchantsController < ApplicationController
     render json: total_revenue_hash
   end
 
-  def find
-    require "pry"; binding.pry
-  end
-
   def favorite_customer
     render json: CustomerSerializer.new(Invoice.favorite_customer(params[:id]))
   end
 
   def favorite_merchant
     render json: MerchantSerializer.new(Merchant.favorite_merchant(params[:id]))
+  end
+
+  def pending_invoices
+    render json: CustomerSerializer.new(Customer.pending_invoices(params[:id]))
   end
 end
