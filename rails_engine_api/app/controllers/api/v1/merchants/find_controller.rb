@@ -6,4 +6,8 @@ class Api::V1::Merchants::FindController < ApplicationController
   def show
     render json: MerchantSerializer.new(Merchant.find_one(params)[0])
   end
+
+  def random
+    render json: MerchantSerializer.new(Merchant.find(Merchant.pluck(:id).sample))
+  end
 end

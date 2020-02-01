@@ -99,6 +99,15 @@ describe 'Merchants API' do
     expect(merchants_json['data'].count).to eq(2)
   end
 
+  it 'can send a random merchant' do
+    merchants = create_list(:merchant, 3)
+
+    get "/api/v1/merchants/random"
+    expect(response).to be_successful
+    merchants_json = JSON.parse(response.body)
+    expect(merchants.any? { |merchant| merchants_json['data']['attributes']['id'] }).to be true
+  end
+
   it 'can send the top x merchants ranked by total revenue' do
     customer_id_1 = create(:customer).id
     merchant_id_1 = create(:merchant).id
