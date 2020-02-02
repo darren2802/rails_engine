@@ -22,6 +22,14 @@ class Merchant < ApplicationRecord
     .limit(1)[0]
   end
 
+  def self.total_revenue(merchant_id)
+    revenue = select('SUM(invoice_items.quantity * invoice_items.unit_price / 100) as revenue')
+      .joins(invoices: [:invoice_items, :transactions])
+      .group(:id).where('merchants.id = ?', merchant_id)
+      .merge(Transaction.successful)[0].revenue
+    require "pry"; binding.pry
+  end
+
   def self.find_one(params)
     if params['id']
       where("(id = ?)", params[:id].to_i)

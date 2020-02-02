@@ -197,4 +197,31 @@ describe 'Merchants API' do
     customers_json = JSON.parse(response.body)
     expect(customers_json['data'].count).to eq(2)
   end
+
+  xit 'can send the total revenue across all transactions associated with one merchant' do
+    merchant = create(:merchant)
+
+    customer_id_1 = create(:customer).id
+    invoice_id_1 = create(:invoice, customer_id: customer_id_1, merchant_id: merchant.id).id
+    transaction_1 = create(:transaction, invoice_id: invoice_id_1, result: "success")
+    item_id_1 = create(:item, merchant_id: merchant.id).id
+    create(:invoice_item, invoice_id: invoice_id_1, item_id: item_id_1, unit_price: 1000, quantity: 10)
+
+    customer_id_2 = create(:customer).id
+    invoice_id_2 = create(:invoice, customer_id: customer_id_2, merchant_id: merchant.id).id
+    transaction_2 = create(:transaction, invoice_id: invoice_id_2, result: "success")
+    item_id_2 = create(:item, merchant_id: merchant.id).id
+    create(:invoice_item, invoice_id: invoice_id_2, item_id: item_id_2, unit_price: 1000, quantity: 20)
+
+    customer_id_3 = create(:customer).id
+    invoice_id_3 = create(:invoice, customer_id: customer_id_3, merchant_id: merchant.id).id
+    transaction_3 = create(:transaction, invoice_id: invoice_id_3, result: "success")
+    item_id_3 = create(:item, merchant_id: merchant.id).id
+    create(:invoice_item, invoice_id: invoice_id_3, item_id: item_id_3, unit_price: 1000, quantity: 20)
+
+    get "/merchants/#{merchant.id}/revenue"
+    expect(response).to be_successful
+    revenue_json = JSON.parse(response.body)
+    expect(revenue_json['data']['attributes']['revenue']).to eq("500.00")
+  end
 end
