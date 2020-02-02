@@ -14,6 +14,14 @@ class Item < ApplicationRecord
     .limit(quantity)
   end
 
+  def self.most_items(quantity)
+    select('items.*, SUM(invoice_items.quantity) as total_items')
+    .joins(:invoice_items)
+    .group(:id)
+    .order('total_items DESC')
+    .limit(quantity)
+  end
+
   def self.find_one(params)
     if params['id']
       where("(id = ?)", params[:id].to_i)

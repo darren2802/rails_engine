@@ -11,6 +11,10 @@ class Api::V1::ItemsController < ApplicationController
     render json: ItemSerializer.new(Item.most_revenue(params[:quantity]))
   end
 
+  def most_items
+    render json: ItemSerializer.new(Item.most_items(params[:quantity]))
+  end
+
   def best_day
     # day = InvoiceItem.best_day(params[:id])[0].best_day.to_s
     best_day = InvoiceItem.best_day(params[:id])
