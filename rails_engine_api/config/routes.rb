@@ -39,6 +39,8 @@ Rails.application.routes.draw do
       resources :transactions, only: [:index, :show]
       get '/transactions/:id/invoice', to: 'transactions/invoices#show'
 
+      get '/invoice_items/find', to: 'invoice_items/find#show'
+      get '/invoice_items/find_all', to: 'invoice_items/find#index'
       resources :invoice_items, only: [:index, :show]
       get '/invoice_items/:id/invoice', to: 'invoice_items/invoices#show'
       get '/invoice_items/:id/item', to: 'invoice_items/items#show'
