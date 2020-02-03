@@ -45,7 +45,7 @@ describe 'Transactions API' do
     customer = create(:customer)
     merchant = create(:merchant)
     invoice = create(:invoice, customer_id: customer.id, merchant_id: merchant.id)
-    transaction = create(:transaction, invoice_id: invoice.id)
+    transaction = create(:transaction, invoice_id: invoice.id, created_at: "2020-01-31", updated_at: "2020-02-01")
 
     # find transaction by id
     get "/api/v1/transactions/find?id=#{transaction.id}"
@@ -75,17 +75,16 @@ describe 'Transactions API' do
     expect(transaction_json['data']['attributes']['result']).to eq(transaction.result)
 
     # find transaction by created_at
-    # get "/api/v1/transactions/find?created_at=#{transaction.created_at}"
-    # expect(response).to be_successful
-    # transaction_json = JSON.parse(response.body)
-    # expect(transaction_json['data']['attributes']['id']).to eq(transaction.id)
+    get "/api/v1/transactions/find?created_at=#{"2020-01-31"}"
+    expect(response).to be_successful
+    transaction_json = JSON.parse(response.body)
+    expect(transaction_json['data']['attributes']['id']).to eq(transaction.id)
 
     # find transaction by updated_at
-    # get "/api/v1/transactions/find?id=#{transaction.updated_at}"
-    # expect(response).to be_successful
-    # transaction_json = JSON.parse(response.body)
-    # expect(transaction_json['data']['attributes']['id']).to eq(transaction.id)
-    # expect(transaction_json['data']['attributes']['name']).to eq(transaction.name)
+    get "/api/v1/transactions/find?updated_at=#{"2020-02-01"}"
+    expect(response).to be_successful
+    transaction_json = JSON.parse(response.body)
+    expect(transaction_json['data']['attributes']['id']).to eq(transaction.id)
   end
 
   it 'can send transactions when finding all by:
@@ -93,9 +92,9 @@ describe 'Transactions API' do
     customer = create(:customer)
     merchant = create(:merchant)
     invoice = create(:invoice, customer_id: customer.id, merchant_id: merchant.id)
-    transaction_1 = create(:transaction, id: 3, invoice_id: invoice.id)
-    transaction_2 = create(:transaction, invoice_id: invoice.id)
-    transaction_3 = create(:transaction, id: 33, invoice_id: invoice.id)
+    transaction_1 = create(:transaction, id: 3, invoice_id: invoice.id, created_at: "2020-01-31", updated_at: "2020-02-01")
+    transaction_2 = create(:transaction, invoice_id: invoice.id, created_at: "2020-01-31", updated_at: "2020-02-01")
+    transaction_3 = create(:transaction, id: 33, invoice_id: invoice.id, created_at: "2020-01-31", updated_at: "2020-02-01")
 
     # find_all by id
     get "/api/v1/transactions/find_all?id=3"
@@ -119,6 +118,18 @@ describe 'Transactions API' do
     get "/api/v1/transactions/find_all?result=#{transaction_1.result}"
     expect(response).to be_successful
     transactions_json = JSON.parse(response.body)
+    expect(transactions_json['data'].count).to eq(3)
+
+    # find_all by created_at
+    get "/api/v1/transactions/find?created_at=#{"2020-01-31"}"
+    expect(response).to be_successful
+    transaction_json = JSON.parse(response.body)
+    expect(transactions_json['data'].count).to eq(3)
+
+    # find_all by updated_at
+    get "/api/v1/transactions/find?updated_at=#{"2020-02-01"}"
+    expect(response).to be_successful
+    transaction_json = JSON.parse(response.body)
     expect(transactions_json['data'].count).to eq(3)
   end
 
