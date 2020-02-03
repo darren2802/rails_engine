@@ -121,13 +121,13 @@ describe 'Transactions API' do
     expect(transactions_json['data'].count).to eq(3)
 
     # find_all by created_at
-    get "/api/v1/transactions/find?created_at=#{"2020-01-31"}"
+    get "/api/v1/transactions/find_all?created_at=#{"2020-01-31"}"
     expect(response).to be_successful
     transaction_json = JSON.parse(response.body)
     expect(transactions_json['data'].count).to eq(3)
 
     # find_all by updated_at
-    get "/api/v1/transactions/find?updated_at=#{"2020-02-01"}"
+    get "/api/v1/transactions/find_all?updated_at=#{"2020-02-01"}"
     expect(response).to be_successful
     transaction_json = JSON.parse(response.body)
     expect(transactions_json['data'].count).to eq(3)
