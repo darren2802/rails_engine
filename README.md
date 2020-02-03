@@ -6,32 +6,19 @@ _Uses Rails and ActiveRecord to build a JSON api which exposes the SalesEngine d
 - Ruby: 2.5.3
 - Rails: 5.2.4.1
 
-## System dependencies
-_Gems?_
-
-## Configuration
-_?_
-
 ## Database
 ### Creation
-_rake db:{create, migrate, seed} ?_
+_rake db:{create, migrate, seed}_
 
 ### Initialization
-_?_
+_rake db:import_csv_
+delete data: _rake db:clear_data
 ### Schema
-![](./db/rails_engine_db_schema.png)
+![](./rails_engine_api/db/rails_engine_db_schema.png)
 
 ## How to run the test suite
-_rspec?_
-
-## Services (job queues, cache servers, search engines, etc.)
-_?_
-
-## Deployment instructions
-_?_
-
-## ...
-_?_
+_rails_engine_api/ rspec_
+_rales_engine_spec_harness/ rspec_
 
 ## Evaluation
 ### Feature Delivery
