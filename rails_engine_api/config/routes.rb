@@ -25,6 +25,7 @@ Rails.application.routes.draw do
 
       get '/customers/find', to: 'customers/find#show'
       get '/customers/find_all', to: 'customers/find#index'
+      get '/customers/random', to: 'customers/find#random'
       get '/customers/:id/favorite_merchant', to: 'merchants#favorite_merchant'
       resources :customers, only: [:index, :show]
       get '/customers/:id/invoices', to: 'customers/invoices#index'

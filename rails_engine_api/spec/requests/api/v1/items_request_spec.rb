@@ -151,13 +151,13 @@ describe 'Items API' do
     get "/api/v1/items/find_all?id=3"
     expect(response).to be_successful
     items_json = JSON.parse(response.body)
-    expect(items_json['data'].count).to eq(2)
+    expect(items_json['data'].count).to eq(1)
 
     # find_all by name
-    get "/api/v1/items/find_all?name=jerde"
+    get "/api/v1/items/find_all?name=#{"Schroeder-Jerde"}"
     expect(response).to be_successful
     items_json = JSON.parse(response.body)
-    expect(items_json['data'].count).to eq(2)
+    expect(items_json['data'].count).to eq(1)
   end
 
   it 'can send a random item' do
