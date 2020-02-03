@@ -17,8 +17,8 @@ _rake db:{create, migrate, seed}_
 ![](./rails_engine_api/db/rails_engine_db_schema.png)
 
 ## How to run the test suite
-_rails_engine_api/ rspec_
-_rales_engine_spec_harness/ rspec_
+- _rails_engine_api/ rspec_
+- _rales_engine_spec_harness/ rspec_
 
 ## Evaluation
 ### Feature Delivery
