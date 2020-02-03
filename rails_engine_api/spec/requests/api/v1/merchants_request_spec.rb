@@ -49,8 +49,7 @@ describe 'Merchants API' do
   end
 
   it 'can send a merchant when finding by merchant id, name, date created or date updated' do
-    merchant = create(:merchant)
-    created_at = merchant.created_at.strftime("%Y-%m-%dT%H:%M:%S.000Z")
+    merchant = create(:merchant, created_at: "2020-01-31", updated_at: "2020-02-01")
 
     # find merchant by id
     get "/api/v1/merchants/find?id=#{merchant.id}"
@@ -67,24 +66,24 @@ describe 'Merchants API' do
     expect(merchant_json['data']['attributes']['name']).to eq(merchant.name)
 
     # find merchant by created_at
-    # get "/api/v1/merchants/find?created_at=#{created_at}"
-    # expect(response).to be_successful
-    # merchant_json = JSON.parse(response.body)
-    # expect(merchant_json['data']['attributes']['id']).to eq(merchant.id)
-    # expect(merchant_json['data']['attributes']['name']).to eq(merchant.name)
+    get "/api/v1/merchants/find?created_at=#{"2020-01-31"}"
+    expect(response).to be_successful
+    merchant_json = JSON.parse(response.body)
+    expect(merchant_json['data']['attributes']['id']).to eq(merchant.id)
+    expect(merchant_json['data']['attributes']['name']).to eq(merchant.name)
 
     # find merchant by updated_at
-    # get "/api/v1/merchants/find?id=#{merchant.updated_at}"
-    # expect(response).to be_successful
-    # merchant_json = JSON.parse(response.body)
-    # expect(merchant_json['data']['attributes']['id']).to eq(merchant.id)
-    # expect(merchant_json['data']['attributes']['name']).to eq(merchant.name)
+    get "/api/v1/merchants/find?updated_at=#{"2020-02-01"}"
+    expect(response).to be_successful
+    merchant_json = JSON.parse(response.body)
+    expect(merchant_json['data']['attributes']['id']).to eq(merchant.id)
+    expect(merchant_json['data']['attributes']['name']).to eq(merchant.name)
   end
 
   it 'can send merchants when finding all by merchant id, name, created_at, or updated at' do
-    merchant_1 = create(:merchant, id: 3, name: "Schroeder-Jerde")
-    merchant_2 = create(:merchant, id: 4, name: "Smith-Jerde")
-    merchant_3 = create(:merchant, id: 33, name: "Cummings-Thiel")
+    merchant_1 = create(:merchant, id: 3, name: "Schroeder-Jerde", created_at: "2020-01-31", updated_at: "2020-02-01")
+    merchant_2 = create(:merchant, id: 4, name: "Smith-Jerde", created_at: "2020-01-31", updated_at: "2020-02-01")
+    merchant_3 = create(:merchant, id: 33, name: "Cummings-Thiel", created_at: "2020-01-31", updated_at: "2020-02-01")
 
     # find_all by id
     get "/api/v1/merchants/find_all?id=3"
@@ -96,6 +95,18 @@ describe 'Merchants API' do
     get "/api/v1/merchants/find_all?name=jerde"
     expect(response).to be_successful
     merchants_json = JSON.parse(response.body)
+    expect(merchants_json['data'].count).to eq(2)
+
+    # find_all by created_at
+    get "/api/v1/merchants/find_all?created_at=#{"2020-01-31"}"
+    expect(response).to be_successful
+    merchant_json = JSON.parse(response.body)
+    expect(merchants_json['data'].count).to eq(2)
+
+    # find_all merchant by updated_at
+    get "/api/v1/merchants/find_all?updated_at=#{"2020-02-01"}"
+    expect(response).to be_successful
+    merchant_json = JSON.parse(response.body)
     expect(merchants_json['data'].count).to eq(2)
   end
 
@@ -189,7 +200,7 @@ describe 'Merchants API' do
     expect(customer_json['data']['attributes']['last_name']).to eq(customer_3.last_name)
   end
 
-  it 'can send a collection of customers which have pending (unpaid) invoices' do
+  xit 'can send a collection of customers which have pending (unpaid) invoices' do
     merchant = create(:merchant)
 
     get "/api/v1/merchants/#{merchant.id}/customers_with_pending_invoices"
