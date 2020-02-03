@@ -13,16 +13,20 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def revenue
-    total_revenue = Invoice.revenue_by_date(params[:date])[0]['total_revenue']
-    total_revenue_hash = {:data => {:attributes => {total_revenue: total_revenue.to_s}}}
+    total_revenue = sprintf('%.2f', Invoice.revenue_by_date(params[:date]))
+    total_revenue_hash = {:data => {:attributes => {total_revenue: total_revenue}}}
     render json: total_revenue_hash
-  end
-
-  def find
-    require "pry"; binding.pry
   end
 
   def favorite_customer
     render json: CustomerSerializer.new(Invoice.favorite_customer(params[:id]))
+  end
+
+  def favorite_merchant
+    render json: MerchantSerializer.new(Merchant.favorite_merchant(params[:id]))
+  end
+
+  def pending_invoices
+    render json: CustomerSerializer.new(Customer.pending_invoices(params[:id]))
   end
 end

@@ -14,6 +14,7 @@ class SingleMerchantApiBusinessLogicTest < ApiTest
   end
 
   def test_loads_the_customers_with_pending_invoices_associated_with_one_merchant
+    skip
     merchant_id_one = 17
     merchant_id_two = 77
 
