@@ -166,4 +166,17 @@ describe 'Invoice_items API' do
     invoice_item_json = JSON.parse(response.body)
     expect(invoice_items_json['data'].count).to eq(3)
   end
+
+  it 'can send a random invoice_item' do
+    customer = create(:customer)
+    merchant = create(:merchant)
+    invoice = create(:invoice, customer_id: customer.id, merchant_id: merchant.id)
+    item = create(:item, merchant_id: merchant.id, unit_price: 5525)
+    invoice_items = create_list(:invoice_item, 3, item_id: item.id, invoice_id: invoice.id)
+
+    get "/api/v1/invoice_items/random"
+    expect(response).to be_successful
+    invoice_items_json = JSON.parse(response.body)
+    expect(invoice_items.any? { |invoice_item| invoice_items_json['data']['attributes']['id'] }).to be true
+  end
 end

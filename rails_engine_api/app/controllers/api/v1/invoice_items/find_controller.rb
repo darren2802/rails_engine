@@ -8,6 +8,6 @@ class Api::V1::InvoiceItems::FindController < ApplicationController
   end
 
   def random
-    render json: InvoiceItemSerializer.new(InvoiceItem.find(Item.pluck(:id).sample))
+    render json: InvoiceItemSerializer.new(InvoiceItem.find(InvoiceItem.pluck(:id).sample))
   end
 end
