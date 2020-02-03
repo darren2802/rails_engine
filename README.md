@@ -12,7 +12,7 @@ _rake db:{create, migrate, seed}_
 
 ### Initialization
 - _rake db:import_csv_
-- delete data: _rake db:clear_data
+- delete data: _rake db:clear_data_
 ### Schema
 ![](./rails_engine_api/db/rails_engine_db_schema.png)
 
