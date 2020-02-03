@@ -11,8 +11,8 @@ _Uses Rails and ActiveRecord to build a JSON api which exposes the SalesEngine d
 _rake db:{create, migrate, seed}_
 
 ### Initialization
-_rake db:import_csv_
-delete data: _rake db:clear_data
+- _rake db:import_csv_
+- delete data: _rake db:clear_data
 ### Schema
 ![](./rails_engine_api/db/rails_engine_db_schema.png)
 
